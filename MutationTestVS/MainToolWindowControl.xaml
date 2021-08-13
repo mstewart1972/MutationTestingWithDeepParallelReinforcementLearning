@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="MutationTestVS.MainToolWindowControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
+             Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}"
+             Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"             
+             mc:Ignorable="d"
+             d:DesignHeight="500" d:DesignWidth="500"
+             Name="MutationTestingToolWindow">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Row="1" Grid.Column="0" Margin="5">
+            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical">
+                <Label x:Name="SolutionLabel" Content="Solution" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+                <Label x:Name="SolutionPathLabel" Content="" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+                <Label x:Name="CompiledSourceLabel" Content="CompiledSource" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+                <Label x:Name="CompiledSourceFilenameLabel" Content="" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+                <Button Content="Get current setup" Click="GetInputParameters_Button_Click" Name="GetInputParameters"/>
+                <Separator Margin="0 5" />
+                <StackPanel Margin="0">
+                    <Label FontWeight="Bold">Mutation Operator</Label>
+                    <StackPanel Margin="10,5">
+                        <CheckBox IsThreeState="True" Name="cbMLOps" IsChecked="True" Checked="cbMLOperators_CheckedChanged" Unchecked="cbAllOperators_CheckedChanged">Enable ML operator selection</CheckBox>
+                        <CheckBox IsThreeState="True" Name="cbAllOps" IsChecked="True" Checked="cbAllOperators_CheckedChanged" Unchecked="cbAllOperators_CheckedChanged">Enable all</CheckBox>
+                        <StackPanel Margin="20,5">
+                            <CheckBox Name="cbOpBgt" IsChecked="True" Checked="cbOperator_CheckedChanged" Unchecked="cbOperator_CheckedChanged">Bgt with Ble</CheckBox>
+                            <CheckBox Name="cbOpBgt_S" IsChecked="True" Checked="cbOperator_CheckedChanged" Unchecked="cbOperator_CheckedChanged">Bgt_S with Ble_S</CheckBox>
+                            <CheckBox Name="cbOpBgt_Un" IsChecked="True" Checked="cbOperator_CheckedChanged" Unchecked="cbOperator_CheckedChanged">Bgt_Un with Ble_Un</CheckBox>
+                            <CheckBox Name="cbOpBgt_Un_S" IsChecked="True" Checked="cbOperator_CheckedChanged" Unchecked="cbOperator_CheckedChanged">Bgt_Un_S with Ble_Un_S</CheckBox>
+                            <CheckBox Name="cbOpBlt" IsChecked="True" Checked="cbOperator_CheckedChanged" Unchecked="cbOperator_CheckedChanged">Blt with Bge</CheckBox>
+                            <CheckBox Name="cbOpBlt_S" IsChecked="True" Checked="cbOperator_CheckedChanged" Unchecked="cbOperator_CheckedChanged">Blt_S with Bge_S</CheckBox>
+                            <CheckBox Name="cbOpBlt_Un" IsChecked="True" Checked="cbOperator_CheckedChanged" Unchecked="cbOperator_CheckedChanged">Blt_Un with Bge_Un</CheckBox>
+                            <CheckBox Name="cbOpBlt_Un_S" IsChecked="True" Checked="cbOperator_CheckedChanged" Unchecked="cbOperator_CheckedChanged">Blt_Un_S with Bge_Un_S</CheckBox>
+                            <CheckBox Name="cbOpBeq" IsChecked="True" Checked="cbOperator_CheckedChanged" Unchecked="cbOperator_CheckedChanged">Beq with Bne_Un</CheckBox>
+                            <CheckBox Name="cbOpBeq_S" IsChecked="True" Checked="cbOperator_CheckedChanged" Unchecked="cbOperator_CheckedChanged">Beq_S with Bne_Un_S</CheckBox>
+                            <CheckBox Name="cbOpAdd" IsChecked="True" Checked="cbOperator_CheckedChanged" Unchecked="cbOperator_CheckedChanged">Add with Sub</CheckBox>
+                            <CheckBox Name="cbOpSub" IsChecked="True" Checked="cbOperator_CheckedChanged" Unchecked="cbOperator_CheckedChanged">Sub with Add</CheckBox>
+                            <CheckBox Name="cbOpMul" IsChecked="True" Checked="cbOperator_CheckedChanged" Unchecked="cbOperator_CheckedChanged">Mul with Div</CheckBox>
+                            <CheckBox Name="cbOpDiv" IsChecked="True" Checked="cbOperator_CheckedChanged" Unchecked="cbOperator_CheckedChanged">Div with Mul</CheckBox>
+                            <CheckBox Name="cbOpRem" IsChecked="True" Checked="cbOperator_CheckedChanged" Unchecked="cbOperator_CheckedChanged">Rem with Mul</CheckBox>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="1">
+            <StackPanel Grid.Column="1" Orientation="Vertical">
+                <Label x:Name="MutateOverviewLabel" Content="Mutate" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>                
+                <Button Content="Run" Click="Run_Button_Click" Name="RunButton" IsEnabled="False"/>
+                <Label x:Name="ProgressLabel" Content="Progress" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+                <ProgressBar Value="0" Name="ProgressBar" Height="10"/>
+                <Label x:Name="CurrentActivityLabel" Content="Inactive" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+                <Button Content="Cancel" Click="Cancel_Button_Click" Name="CancelButton" IsEnabled="False"/>
+                <Separator Margin="0 5" />
+                <Label x:Name="ResultOverviewLabel" Content="Results" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+                <Label x:Name="MutantCountLabel" Content="Mutants" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+                <Label x:Name="MutantCountValueLabel" Content="0" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+                <Label x:Name="MutantKilledCountLabel" Content="Killed" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+                <Label x:Name="MutantKilledCountValueLabel" Content="0" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+                <Label x:Name="MutationScoreLabel" Content="Mutation Score (0=bad, 1=good)" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+                <Label x:Name="MutationScoreValueLabel" Content="0/0" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+                <ProgressBar Value="0" Name="MutationScoreBar" Height="10"/>
+                <Label x:Name="ClassSelectionLabel" Content="Class" Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"/>
+                <ComboBox x:Name="ClassSelectionBox" SelectionChanged="OnClassSelect"/>
+                <Button Content="Show surviving mutants" Margin="0 5 0 0" Click="Show_Mutants_Button_Click" Name="ShowMutantsButton" IsEnabled="False"/>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
